@@ -17,3 +17,6 @@ sed -i 's/&#8;/ /' $HIVE_HOME/conf/hive-site.xml
 # Replace guava jar
 rm $HIVE_HOME/lib/guava*.jar
 cp $HADOOP_HOME/share/hadoop/hdfs/lib/guava*.jar $HIVE_HOME/lib/
+
+# Init database
+$HIVE_HOME/bin/schematool –initSchema –dbType derby
