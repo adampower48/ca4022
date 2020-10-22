@@ -1,6 +1,3 @@
-setup_scripts folder contains files to start/stop hadoop/hive/etc.  
-mapreduce folder has examples of using them.  
-
 # Setup Scripts
 **Run all of these scripts from the folder you want to install to.**  
 **Restart your terminal after installing each program.**  
@@ -22,3 +19,10 @@ Verify that it installed correctly by running `hive`
 Run [pig_install.sh](setup_scripts/pig_install.sh)  
 Verify that it installed correctly by running `pig -x local`  
 Verify that everything else is connected properly by running [mapreduce_pig.sh](mapreduce/mapreduce_pig.sh)  
+
+# Examples
+## [mapreduce_hadoop.sh](mapreduce/mapreduce_hadoop.sh)  
+MapReduce using hadoop and jar file  
+
+## [mapreduce_pig.sh](mapreduce/mapreduce_pig.sh)  
+MapReduce using pig  
