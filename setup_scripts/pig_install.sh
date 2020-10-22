@@ -2,7 +2,7 @@
 wget https://ftp.heanet.ie/mirrors/www.apache.org/dist/pig/pig-0.17.0/pig-0.17.0.tar.gz
 tar -xvzf pig-0.17.0.tar.gz
 
-# Set home
+# Set pig home
 export PIG_HOME=$(pwd)/pig-0.17.0
 
 # Add paths to bashrc
