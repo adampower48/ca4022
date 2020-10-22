@@ -3,6 +3,8 @@ mapreduce folder has examples of using them.
 
 # Setup Scripts
 **Run all of these scripts from the folder you want to install to.**  
+**Restart your terminal after installing each program.**  
+
 
 ## Hadoop
 Run [hadoop_install.sh](setup_scripts/hadoop_install.sh)  
