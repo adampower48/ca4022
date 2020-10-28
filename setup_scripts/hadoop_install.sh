@@ -9,8 +9,14 @@ tar -zxvf hadoop-3.3.0.tar.gz
 # set hadoop home
 export HADOOP_HOME=$(pwd)/hadoop-3.3.0
 
-# Add java to hadoop config
-echo 'export JAVA_HOME=/usr/lib/jvm/java-8-openjdk-amd64' >> $HADOOP_HOME/etc/hadoop/hadoop-env.sh
+# Add java to hadoop config and bashrc
+echo '
+export JAVA_HOME=/usr/lib/jvm/java-8-openjdk-amd64
+' >> $HADOOP_HOME/etc/hadoop/hadoop-env.sh
+
+echo '
+export JAVA_HOME=/usr/lib/jvm/java-8-openjdk-amd64
+' >> ~/.bashrc
 
 # Add variables to bashrc
 echo '
@@ -45,3 +51,12 @@ export HDFS_SECONDARYNAMENODE_USER="$USER"
 export YARN_RESOURCEMANAGER_USER="$USER"
 export YARN_NODEMANAGER_USER="$USER"
 ' >> $HADOOP_HOME/etc/hadoop/hadoop-env.sh
+
+# Remove all previous temp folders
+rm -r /tmp/hadoop*
+
+# Copy config files
+THIS_DIR="$( cd "$( dirname "${BASH_SOURCE[0]}" )" >/dev/null 2>&1 && pwd )"
+cp $THIS_DIR/core-site.xml $HADOOP_HOME/etc/hadoop/core-site.xml
+cp $THIS_DIR/hdfs-site.xml $HADOOP_HOME/etc/hadoop/hdfs-site.xml
+
