@@ -25,6 +25,12 @@ export PATH=$PATH:$HADOOP_HOME/sbin:$HADOOP_HOME/bin
 export HADOOP_OPTS="-Djava.library.path=$HADOOP_HOME/lib/native"
 ' >> ~/.bashrc
 
+# Set pdsh to use ssh (https://stackoverflow.com/questions/48189954/hadoop-start-dfs-sh-connection-refused)
+echo '
+export PDSH_RCMD_TYPE=ssh
+' >> ~/.bashrc
+
+
 # Set up localhost ssh key
 ssh-keygen -t rsa -P '' -f ~/.ssh/id_rsa
 cat ~/.ssh/id_rsa.pub >> ~/.ssh/authorized_keys
