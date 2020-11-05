@@ -44,7 +44,7 @@ create table ratings
     row format delimited fields terminated by ","
     tblproperties ("skip.header.line.count" = "1");
 
--- Load data
+-- Load data into tables
 load data inpath "/user/adam/input/pig_output_data/users.csv" overwrite into table user_rating_stats;
 load data inpath "/user/adam/input/clean_data/movies.csv" overwrite into table movies;
 load data inpath "/user/adam/input/ml-latest-small/ratings.csv" overwrite into table ratings;
@@ -72,9 +72,53 @@ from movies
          join ratings r on nur.userid = r.userId and
                            nur.movieid = r.movieId;
 
+-- Save normalised ratings
+insert overwrite directory "/user/adam/output/movie_ratings_all"
+    row format delimited fields terminated by '\t'
+select movieId, title, year, userId, rating, norm_rating
+from all_ratings;
+
 -- Calculate average of ratings
-insert overwrite directory "/user/adam/output/movie_averages"
-row format delimited fields terminated by '\t'
-select movieId, title, avg(rating) as avg_rating, avg(norm_rating) as avg_norm_rating
+create table movie_averages as
+select movieId,
+       title,
+       avg(rating)      as avg_rating,
+       avg(norm_rating) as avg_norm_rating
 from all_ratings
 group by movieId, title;
+
+-- Save averages
+insert overwrite directory "/user/adam/output/movie_averages"
+    row format delimited fields terminated by '\t'
+select *
+from movie_averages;
+
+
+-- Genres: split into rows
+create table genres as
+select movieId, genre
+from movies lateral view explode(split(regexp_replace(genres, "[\(\)]", ""), ",")) genres as genre;
+
+-- Save genres
+insert overwrite directory "/user/adam/output/genres_split"
+    row format delimited fields terminated by '\t'
+select *
+from genres;
+
+-- Get average & std rating per genre
+create table genre_ratings as
+select genre,
+       count(*)             as num_movies,
+       avg(avg_rating)      as avg_rating,
+       std(avg_rating)      as std_rating,
+       avg(avg_norm_rating) as avg_norm_rating,
+       std(avg_norm_rating) as std_norm_rating
+from genres
+         join movie_averages on genres.movieId = movie_averages.movieId
+group by genres.genre;
+
+-- Save genre ratings
+insert overwrite directory "/user/adam/output/genre_averages"
+    row format delimited fields terminated by '\t'
+select *
+from genre_ratings;

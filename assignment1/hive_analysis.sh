@@ -18,7 +18,7 @@ ${HADOOP_HOME}/bin/hdfs dfs -put -f input/* input
 
 # Run from database directory
 cd $DB_DIR
-hive -S -f $WORK_DIR/hive_analysis.sql
+hive -f $WORK_DIR/hive_analysis.sql
 cd $WORK_DIR
 
 # Bring output home
@@ -28,7 +28,13 @@ ${HADOOP_HOME}/bin/hdfs dfs -get -f output .
 # Import csv helpers
 . ./csv_helpers.sh
 
-# Combine outputs into tsv file
+# Combine outputs into tsv files
 create_tsv output/movie_averages movieId title avg_rating avg_norm_rating
-# Remove old folder
+create_tsv output/genre_averages genre num_movies avg_rating std_rating avg_norm_rating std_norm_rating
+create_tsv output/genres_split movieId genre
+create_tsv output/movie_ratings_all movieId title year userId rating norm_rating
+# Remove old folders
 rm -r output/movie_averages
+rm -r output/genre_averages
+rm -r output/genres_split
+rm -r output/movie_ratings_all

@@ -1,4 +1,4 @@
-register file:/home/adam/Documents/pig-0.17.0/lib/piggybank.jar
+register file:/home/adam/Documents/pig-0.17.0/lib/piggybank.jar;
 DEFINE CSVLoader org.apache.pig.piggybank.storage.CSVLoader;
 
 -- Load data
@@ -24,7 +24,7 @@ movies = foreach movies generate
 
 -- Save csv
 fs -rm -r -f output/movies -- remove old dir
-store movies into 'output/movies' using PigStorage('\t', '-schema'); -- Save parts & other gunk
+store movies into 'output/movies' using PigStorage('\t', '-schema'); -- Save parts, headers & other gunk
 fs -rm -f output/movies/.pig_schema -- Remove schema file
 fs -rm -f output/movies/_SUCCESS -- Remove success file
 fs -getmerge output/movies output/movies.csv; -- Merge into single file
